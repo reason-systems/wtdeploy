@@ -44,7 +44,8 @@ def install_app():
     fab_django.prepare_env(env.local_conf_folder, env.deploy_folder)
     update_conf()
     deploy()
-    with cd(env.deploy_folder):
+    if 0:
+       with cd(env.deploy_folder):
         fab_django.create_admin()
 
 def clean_app():

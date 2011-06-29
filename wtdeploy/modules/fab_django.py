@@ -45,7 +45,7 @@ def syncdb():
     # make a dump to avoid problems
     run("mysqldump -u%(database_admin)s -p%(database_admin_pass)s %(database_name)s > dump_%(database_name)s.sql" % env)
     run('source env/bin/activate && python app/manage.py syncdb --noinput')
-    run('source env/bin/activate && python app/manage.py migrate')
+    if getattr(env, "has_south", False): run('source env/bin/activate && python app/manage.py migrate')
 
 def update_index():
     run('source env/bin/activate && python app/manage.py update_index')
@@ -64,6 +64,7 @@ def deploy():
     run(cmd)
 
 def create_admin():
+    return ## TODO: if env.django_admin_user 
     cmd = "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@wtelecom.es', 'ramboFTW')"
     run('source env/bin/activate && echo "' + cmd + '" | python app/manage.py shell')
 
